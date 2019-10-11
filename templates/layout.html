@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>MLB Data - {{ title }}</title>
+    {% else %}
+        <title>MLB Data</title>
+    {% endif %}
+</head>
+<body>
+    <span>
+        <a id="home" href="./">Home</a>
+        {% if title %}
+            <h2 id="banner">Major League Baseball Statistics - {{ title }}</h2>
+        {% else %}
+            <h2 id="banner">Major League Baseball Statistics</h2>
+        {% endif %}
+
+    </span>
+    {% block content %}{% endblock content %}
+
+<footer>
+    <span>
+        <small><p class="copy">Copyright &copy; <a href="http://www.davidalley.net/" target="_blank">David Alley</a></p></small>
+        <small class="copy" id="year">2019</small>
+    </span>
+
+</footer>
+
+<!-- Optional JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- <script>window.jQuery || document.write('<script src="{{ url_for('static', filename = 'jquery-1.4.2.min.js') }}">\x3C/script>')</script> -->
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery.copyRight.js') }}" ></script>
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'script.js') }}" ></script>
+</body>
+</html>

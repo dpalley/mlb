@@ -1,0 +1,233 @@
+body {
+    margin: 0px;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+a {
+    color: black;
+}
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#home {
+    margin: 20px auto auto 10px;
+}
+#banner {
+    text-align: center;
+}
+
+#mlb {
+    /* flex-direction: column; */
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.league {
+    margin: 0px;
+    padding: 0px;
+    border: .5px solid black;
+}
+
+/* contained within mlb */
+/* container for al-xxx divisions */
+#al {
+    background-color: red;
+    flex-direction: column;
+    justify-content: space-evenly;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* contained within mlb */
+/* container for nl-xxx divisions */
+#nl {
+    background: blue;
+    flex-direction: column;
+    justify-content: space-evenly;
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.division {
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px solid black;
+}
+
+.division h4 { margin-left: 10px; }
+
+/* contained within al (league) */
+/* container for individual teams */
+#al-east {
+    flex-direction: column;
+    order: 1;
+    background-color: #e55039;
+}
+
+#al-central {
+    flex-direction: column;
+    order: 2;
+    background-color: #ee5253;
+}
+
+#al-west {
+    flex-direction: column;
+    order: 3;
+    background-color: #e74c3c;
+}
+
+#nl-east {
+    flex-direction: column;
+    order: 1;
+    background-color: #4a69bd;
+}
+
+#nl-central {
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    order: 2;
+    background-color: #2980b9;
+}
+
+#nl-west {
+    flex-direction: column;
+    order: 3;
+    background-color: #54a0ff;
+}
+
+.team {
+    margin: 0 auto;
+    padding: 0;
+
+}
+
+img {
+    margin: 0 10px;
+}
+.team-logo {
+  width:  25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.team-name {
+    min-width: 190px;
+}
+
+.clear-button {
+  background-color: inherit;
+  border: none;
+  color: black;
+  padding: 15px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.clear-button:hover {
+    cursor: pointer;
+}
+
+.stat-logo {
+    width: 15px;
+    height: 15px;
+    padding: 10px;
+}
+
+.each-player {
+    min-height: 35px;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin: 0 auto;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.player-pic {
+    height: 50px;
+    width: auto;
+    margin: 10px;
+    vertical-align: middle;
+}
+
+.player-search button {
+    height: 20px;
+    font-size: 16px;
+}
+
+footer {
+    margin: 0px;
+    padding: 10px;
+    background-color: black;
+    height: 100%;
+    display:  inline-block;
+    text-align: center;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+    border: 0;
+    font-family: Verdana;
+    flex-shrink: 0;
+}
+
+footer span {
+    display: block;
+    margin: 0 auto;
+    color: #bbb;
+}
+
+
+.copy {
+    display: inline-block;
+}
+
+.copy a {
+    text-decoration: none;
+    color: white;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.copy a:hover {
+  text-decoration: none;
+  font-style: italic;
+}
+
+
+
+@media (max-width: 700px) {
+  #al #nl {
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 400px) {
+  #al #nl  {
+    max-width: 100%;
+  }
+}

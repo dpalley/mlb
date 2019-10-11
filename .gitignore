@@ -1,0 +1,8 @@
+env/
+temp/
+__pycache__/
+
+*.pyc
+*.ipynb
+teams.json
+.DS_Store

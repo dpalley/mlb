@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div id="mlb">
+    {% for league in teams.leagues %}
+        {% set league_id = league.abr.lower() %}
+        <div class="league" id="{{ league_id }}">
+        <h2>{{ league.name }} Teams</h2>
+
+        {% for division in league.divisions %}
+            {% set division_id = division.name.lower().replace(' ','-') %}
+
+            <div class="division" id="{{ division_id }}">
+
+
+
+                <!-- use WTForms here -->
+                <form method="POST" action="/teams">
+
+                <h4>{{ division.name }}</h4>
+                {% for team in division.teams %}
+                    {% set team_name = team.name %}
+                    {% set dashed_name = team_name.replace(' ', '-') %}
+                    {% set id = team.id %}
+                    {% set url = team.url[1:] %}
+                    {% set logo_url = 'https:' ~ team.logo %}
+                    {% set stats_base_url = "http://mlb.mlb.com/stats/sortable.jsp#game_type='R'&season=2019" %}
+                    {% set hitting_url = stats_base_url ~ '&statType=hitting&team_id=' ~ id ~ '&playerType=ALL' %}
+                    {% set fielding_url = stats_base_url ~ '&statType=fielding&team_id=' ~ id ~ '&playerType=ALL' %}
+                    {% set pitching_url = stats_base_url ~ '&statType=pitching&team_id=' ~ id ~ '&playerType=ALL&position="1"' %}
+                    {% set team_url = 'http://m.' ~ url ~ '.mlb.com/roster/40-man/' %}
+
+                    <p class="team"><span>
+                        <a href="{{ team_url }}"><img class="team-logo" src = "{{ logo_url }}"></a>
+                        <button class='clear-button' name='team' type="submit" value={{ url ~ '.' ~ dashed_name ~ '.' ~ division_id }}>{{ team_name }}</button>
+                    </span></p>
+
+                    {% endfor %}
+                </form>
+            </div>            <!-- class=division -->
+            {% endfor %}      <!-- for division in league.divisions -->
+        </div>                <!-- class=league -->
+        {% endfor %}          <!-- league in teams.leagues          -->
+    </div>                    <!-- id=mlb -->
+{% endblock content %}
