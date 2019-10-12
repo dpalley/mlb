@@ -1,3 +1,7 @@
+:root {
+--dark: #343a40;
+}
+
 body {
     margin: 0px;
 }
@@ -26,7 +30,14 @@ a:hover {
     margin: 20px auto auto 10px;
 }
 #banner {
-    text-align: center;
+    /* text-align: center; */
+    color: #fff;
+    margin: auto;
+}
+
+#brand {
+    color: #eee;
+    margin-right: 40px;
 }
 
 #mlb {
@@ -107,8 +118,8 @@ a:hover {
 }
 
 #nl-central {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     flex-direction: column;
     order: 2;
     background-color: #2980b9;
@@ -121,13 +132,13 @@ a:hover {
 }
 
 .team {
-    margin: 0 auto;
-    padding: 0;
+    margin: 0px auto;
+    padding: 0px;
 
 }
 
 img {
-    margin: 0 10px;
+    margin: 0px 10px;
 }
 .team-logo {
   width:  25px;
@@ -181,30 +192,24 @@ img {
 }
 
 footer {
-    margin: 0px;
-    padding: 10px;
-    background-color: black;
-    height: 100%;
-    display:  inline-block;
+    /* margin: 0px;
+    padding: 0px; */
+    background-color: var(--dark);
     text-align: center;
-    left: 0;
-    bottom: 0;
-    height: 30px;
+    height: 50px;
+    line-height: 50px;
     width: 100%;
-    border: 0;
     font-family: Verdana;
-    flex-shrink: 0;
 }
 
-footer span {
-    display: block;
-    margin: 0 auto;
+#footer-span {
     color: #bbb;
 }
 
 
 .copy {
     display: inline-block;
+    margin: 0px auto 10px auto;
 }
 
 .copy a {
@@ -230,4 +235,19 @@ footer span {
   #al #nl  {
     max-width: 100%;
   }
+}
+
+/* https://css-tricks.com/couple-takes-sticky-footer/ */
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
 }

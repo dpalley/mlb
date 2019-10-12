@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!--
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+ -->
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}" >
+    <!-- <link rel="stylesheet" href=https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <script src="https://kit.fontawesome.com/35387aca45.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 
@@ -14,19 +24,56 @@
     {% endif %}
 </head>
 <body>
-    <span>
-        <a id="home" href="./">Home</a>
-        {% if title %}
-            <h2 id="banner">Major League Baseball Statistics - {{ title }}</h2>
-        {% else %}
-            <h2 id="banner">Major League Baseball Statistics</h2>
-        {% endif %}
+    <div class="content">
 
-    </span>
+    {% set LOGIN_REQUIRED = true %}
+
+    <!-- Bootstrap Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <div class="container">
+        <a class="fas fa-baseball-ball" id="brand" href="home"></a>
+
+        <div class="text-xs-center">
+            {% if title %}
+                <h2 id="banner">MLB Statistics - {{ title }}</h2>
+            {% else %}
+                <h2 id="banner">MLB Statistics</h2>
+            {% endif %}
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="home">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="teams">Teams</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="players">Players</a>
+            </li>
+            {% if LOGIN_REQUIRED %}
+            <li class="nav-item">
+              <a class="nav-link" href="login">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
     {% block content %}{% endblock content %}
 
-<footer>
-    <span>
+</div>  <!-- class="content"   -->
+
+
+<footer class="footer">
+    <span id="footer-span">
         <small><p class="copy">Copyright &copy; <a href="http://www.davidalley.net/" target="_blank">David Alley</a></p></small>
         <small class="copy" id="year">2019</small>
     </span>
@@ -36,7 +83,14 @@
 <!-- Optional JavaScript -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- <script>window.jQuery || document.write('<script src="{{ url_for('static', filename = 'jquery-1.4.2.min.js') }}">\x3C/script>')</script> -->
-<script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery.copyRight.js') }}" ></script>
-<script type = "text/javascript" src = "{{ url_for('static', filename = 'script.js') }}" ></script>
+<script src = "{{ url_for('static', filename = 'bootstrap.bundle.min.js') }}"></script>
+<script src = "{{ url_for('static', filename = 'jquery.copyRight.js') }}" ></script>
+<script src = "{{ url_for('static', filename = 'script.js') }}" ></script>
+
+<!--
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+ -->
+
 </body>
 </html>
