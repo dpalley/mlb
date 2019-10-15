@@ -251,3 +251,39 @@ body {
 .footer {
   flex-shrink: 0;
 }
+
+
+.card-info {
+  border: 0;
+  border-radius: 1rem;
+  width: 25rem;
+  padding: 1.5rem;
+}
+
+.card-info .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.btn-google {
+  color: white;
+  background-color: #ea4335;
+}
+
+.btn-facebook {
+  color: white;
+  background-color: #3b5998;
+}
+
+.register-view {
+    background: #baa;
+    padding: 30px;
+    height: 100%;
+}
+
+.login-view {
+    background: #bba;
+    padding: 30px;
+    height: 100%;
+}
