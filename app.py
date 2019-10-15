@@ -1,16 +1,18 @@
-from flask import Flask, render_template, url_for, request, flash, redirect
+from flask import render_template, url_for, request, flash, redirect
 import json
 import secrets
 from forms import RegistrationForm, LoginForm
+from models import *
 
 
-app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(24)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mlb:password@localhost:5432/mlb'
 
-def get_teams():
-    with open('teams.json', 'r') as f:
-        teams = json.load(f)
-        return teams
+
+# def get_teams():
+#     with open('teams.json', 'r') as f:
+#         teams = json.load(f)
+#         return teams
 
 @app.route('/')
 @app.route('/home')
