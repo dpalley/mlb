@@ -276,14 +276,17 @@ body {
   background-color: #3b5998;
 }
 
+
 .register-view {
-    background: #baa;
+    background-image: url("field.jpg");
+    /* background: #baa; */
     padding: 30px;
     height: 100%;
 }
 
 .login-view {
-    background: #bba;
+    background-image: url("field.jpg");
+    /* background: #bba; */
     padding: 30px;
     height: 100%;
 }

@@ -1,11 +1,6 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from mlb import db
 # from teams import get_teams, get_players
 from sqlalchemy.dialects.postgresql import JSON
-
-
-app = Flask(__name__)
-db = SQLAlchemy(app)
 
 class User(db.Model):
     id         = db.Column(db.Integer, primary_key=True)
