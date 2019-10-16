@@ -4,6 +4,8 @@ import json
 from bs4 import BeautifulSoup as soup
 import lxml
 import fileinput
+from mlb.models import League
+from mlb import db
 
 OFFLINE = False
 
@@ -33,19 +35,13 @@ def get_teams():
             teams = json.load(f)
             # return json.loads(f)
             return teams
-
     else:
-        # get html from web
-        page = requests.get('https://www.mlb.com/standings')
-        target = soup(page.text, 'lxml')
-        pattern = re.compile(r"window.reactHeaderState")
-        my_script = target.find('script', text=pattern)
-        my_script = my_script.text
-        teams = find_json(my_script, my_script.index('"teamData'))
-        return json.loads(teams)
+        league = League().query.first()
+        return league.info if league else seed_teams()
 
 def get_players(team):
     page = requests.get('http://m.' + team + '.mlb.com/roster/40-man/')
+    import pdb; pdb.set_trace()
 
     target = soup(page.text, 'lxml')
     roster = target.find('div', id='content')
@@ -73,4 +69,19 @@ def get_db_teams():
     league = League.query.first()
     teams = league.info
     # import pdb; pdb.set_trace()
+    return teams
+
+def seed_teams():
+    league = League()
+    page = requests.get('https://www.mlb.com/standings')
+    target = soup(page.text, 'lxml')
+    pattern = re.compile(r"window.reactHeaderState")
+    my_script = target.find('script', text=pattern)
+    my_script = my_script.text
+    teams = find_json(my_script, my_script.index('"teamData'))
+    teams = json.loads(teams)
+    # import pdb; pdb.set_trace()
+    league = League(info = teams)
+    db.session.add(league)
+    db.session.commit()
     return teams
