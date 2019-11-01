@@ -150,18 +150,20 @@ img {
     min-width: 190px;
 }
 
-.clear-button {
+.team-link {
   background-color: inherit;
   border: none;
   color: black;
-  padding: 15px;
+  padding: 10px;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
 }
 
-.clear-button:hover {
+.team-link:hover {
     cursor: pointer;
+    text-decoration: none;
+    color: black;
 }
 
 .stat-logo {
@@ -265,14 +267,24 @@ body {
 
 .register-view {
     background-image: url("field.jpg");
-    /* background: #baa; */
     padding: 30px;
     height: 100%;
 }
 
+.account-view {
+    background-image: url("field.jpg");
+    padding: 30px;
+    height: 100%;
+}
+
+.account-img {
+    height: 50px;
+    width: 50px;
+    border: 1px solid #444;
+}
+
 .login-view {
     background-image: url("field.jpg");
-    /* background: #bba; */
     padding: 30px;
     height: 100%;
 }

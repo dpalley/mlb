@@ -1,5 +1,5 @@
 from flask import render_template, url_for, request, flash, redirect
-from mlb.forms import RegistrationForm, LoginForm
+from mlb.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from mlb.models import User, League, Team, Player
 from mlb.teams import get_teams
 from mlb import app, db, bcrypt
@@ -40,19 +40,33 @@ def login():
             login_user(user, remember = form.remember_me.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
+            # return redirect(next or url_for('home'))
+
         else:
             flash('Login uncussessful. Please check email and password.', 'danger')
     return render_template('login.html', title="Login", form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
+    # import pdb; pdb.set_trace()
     logout_user()
     return redirect(url_for('home'))
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title="Account")
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account information has been updated.', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    return render_template('account.html', title="Account", form = form)
 
 @app.route('/teams')
 def teams():

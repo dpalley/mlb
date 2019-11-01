@@ -50,7 +50,7 @@ def get_players(team):
 
     for a in roster.find_all('a', href=re.compile("player")):
         href = a['href']
-        junk1, junk2, player_id, name = href.split('/')
+        _1, _2, player_id, name = href.split('/')
         player_name = name.title().replace('-', ' ')
         player_names.append(player_name)
         player_ids.append(player_id)

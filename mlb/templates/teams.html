@@ -31,10 +31,8 @@
                     {% set pitching_url = stats_base_url ~ '&statType=pitching&team_id=' ~ id ~ '&playerType=ALL&position="1"' %}
                     {% set team_url = 'http://m.' ~ url ~ '.mlb.com/roster/40-man/' %}
 
-                    <p class="team"><span>
-                        <a href="{{ team_url }}"><img class="team-logo" src = "{{ logo_url }}"></a>
-                        <button class='clear-button' name='team' type="submit" value={{ url ~ '.' ~ dashed_name ~ '.' ~ division_id }}>{{ team_name }}</button>
-                    </span></p>
+                    <a class="team-link" href="{{ team_url }}"><span>
+                    <img class="team-logo" src = "{{ logo_url }}"><{{ url ~ '.' ~ dashed_name ~ '.' ~ division_id }}></span>{{ team_name }}</a><br />
 
                     {% endfor %}
                 </form>
