@@ -26,7 +26,7 @@ if ENV == 'dev':
 
 if ENV == 'prod':
     app.debug = False
-    app.config['DATABASE_URL'] = 'postgres://hokalujnsvymxw:67b2b9de02ff6bba57f7ea38e160a6486341074dd4003327e98ca36dde2b8564@ec2-54-235-96-48.compute-1.amazonaws.com:5432/d1c3q968639kod'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://hokalujnsvymxw:67b2b9de02ff6bba57f7ea38e160a6486341074dd4003327e98ca36dde2b8564@ec2-54-235-96-48.compute-1.amazonaws.com:5432/d1c3q968639kod'
 
 if ENV == 'test':
     app.debug = True
