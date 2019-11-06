@@ -77,3 +77,10 @@ def teams():
 def players():
     players = get_players
     return render_template('players.html', title="Players", players = players)
+
+@app.route('/show')
+def show():
+    users = User.query.all()
+    league = League.query.first()
+    teams = Team.query.all()
+    return render_template('show.html', users = users, league = league, teams = teams, config = app.config)

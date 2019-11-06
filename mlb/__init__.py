@@ -18,9 +18,9 @@ app.config['SECRET_KEY'] = secrets.token_hex(24)
 
 
 # 'dev', 'prod', 'test'
-ENV = 'prod'
+ENV = 'dev'
 
-if ENV == 'dev':
+if ENV == 'prod':
     app.debug = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mlb:password@localhost:5432/mlb'
 

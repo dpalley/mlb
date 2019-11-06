@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h3>Users</h3>
+    <ul>
+        {% for user in users %}
+        <li>{{ user.username }}</li>
+        {% endfor %}
+    </ul>
+<br />
+<h3>Teams</h3>
+    <ul>
+        {% for team in teams %}
+        <li>{{ team.name }}</li>
+        {% endfor %}
+    </ul>
+<br />
+
+<h3>League Info</h3>
+<ul><li>{{ league.info }}</li></ul>
+<br />
+
+<h3>Configuration</h3>
+<ul><li>{{ config }}</li></ul>
+{% endblock content %}
