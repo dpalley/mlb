@@ -16,21 +16,11 @@ app.debug = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = secrets.token_hex(24)
 
-
-# 'dev', 'prod', 'test'
-ENV = 'dev'
-
-if ENV == 'prod':
-    app.debug = True
+if app.config['ENV'] == 'development':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mlb:password@localhost:5432/mlb'
 
-if ENV == 'prod':
-    app.debug = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://hokalujnsvymxw:67b2b9de02ff6bba57f7ea38e160a6486341074dd4003327e98ca36dde2b8564@ec2-54-235-96-48.compute-1.amazonaws.com:5432/d1c3q968639kod'
-
-if ENV == 'test':
-    app.debug = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mlb:password@localhost:5432/mlb'
+if app.config['ENV'] == 'production':
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 
 db = SQLAlchemy(app)

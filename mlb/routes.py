@@ -84,3 +84,19 @@ def show():
     league = League.query.first()
     teams = Team.query.all()
     return render_template('show.html', users = users, league = league, teams = teams, config = app.config)
+
+@app.route('/choose/<pick_one>')
+def choose(pick_one):
+    if pick_one == 'users':
+        title = 'Users'
+        choices = User.query.all()
+    elif pick_one == 'league':
+        title = 'League'
+        choices = League.query.all()
+    elif pick_one == 'config':
+        title = 'Configuration'
+        choices = app.config
+    else:
+        title = 'Error'
+        choices = 'error'
+    return render_template('choose.html',  title = title, choices = choices)

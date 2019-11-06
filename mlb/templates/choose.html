@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h3>{{ title }}</h3>
+<ul>
+    {% if title == 'Error' %}
+        <li>Error - choices include "/choose/users", "/choose/league", or "/choose/config"</li>
+    {% elif title == 'Configuration' %}
+        <li>{{ choices }}</li>
+    {% else %}
+        {% for choice in choices %}
+        <li>{{ choice }}</li>
+        {% endfor %}
+    {% endif %}
+</ul>
+
+{% endblock content %}
