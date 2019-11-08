@@ -47,6 +47,13 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email is taken. Please choose another.')
 
+class TeamForm(FlaskForm):
+    # https://stackoverflow.com/questions/23283348/validate-wtform-form-based-on-clicked-button
+    # select   = ButtonField("Process", name="action", value=PROCESS)
+    teamname = StringField()
+    team_url = StringField()
+    team_id  = StringField()
+    submit   = SubmitField('test')
 
 class SearchForm(FlaskForm):
     pass

@@ -1,10 +1,12 @@
 from flask import render_template, url_for, request, flash, redirect
-from mlb.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from mlb.forms import RegistrationForm, LoginForm, UpdateAccountForm, TeamForm
 from mlb.models import User, League, Team, Player
-from mlb.teams import get_teams
+from mlb.teams import get_teams, get_players, set_teams_db
 from mlb import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 
+# right now, only run once
+# set_teams_db()
 
 @app.route('/')
 @app.route('/home')
@@ -49,7 +51,7 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    # import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
     logout_user()
     return redirect(url_for('home'))
 
@@ -68,10 +70,21 @@ def account():
         form.email.data = current_user.email
     return render_template('account.html', title="Account", form = form)
 
-@app.route('/teams')
+@app.route('/teams', methods=['GET', 'POST'])
 def teams():
-    teams = get_teams()
-    return render_template('teams.html', title="Teams", teams=teams)
+
+    form = TeamForm()
+    if form.validate_on_submit():
+        teams = get_teams()
+
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account information has been updated.', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        teams = get_teams()
+        return render_template('teams.html', title="Teams", teams=teams, form = form)
 
 @app.route('/players')
 def players():

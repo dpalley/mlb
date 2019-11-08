@@ -235,6 +235,8 @@ body {
 }
 .content {
   flex: 1 0 auto;
+  margin: 0;
+  padding: 0;
 }
 .footer {
   flex-shrink: 0;

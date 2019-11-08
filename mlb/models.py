@@ -18,21 +18,23 @@ class User(db.Model, UserMixin):
 
 
 class Team(db.Model):
-    id        = db.Column(db.Integer, primary_key=True, autoincrement=False)
-    logo      = db.Column(db.String(50), unique=True, nullable=False)
-    name      = db.Column(db.String(50), unique=True, nullable=False)
-    shortName = db.Column(db.String(50), unique=True, nullable=False)
-    url       = db.Column(db.String(50), unique=True, nullable=False)
-    league    = db.Column(db.String(30), unique=False, nullable=False)
-    division  = db.Column(db.String(30), unique=False, nullable=False)
-    image_file = db.Column(db.String(50), nullable=False, default='default.jpg')
+    id         = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    logo       = db.Column(db.String(50), unique=True, nullable=False)
+    name       = db.Column(db.String(50), unique=True, nullable=False)
+    shortName  = db.Column(db.String(50), unique=True, nullable=False)
+    url        = db.Column(db.String(50), unique=True, nullable=False)
+    league     = db.Column(db.String(30), unique=False, nullable=False)
+    division   = db.Column(db.String(30), unique=False, nullable=False)
+    players    = db.relationship('Player', backref='team', lazy=True)
     def __repr__(self):
         return f"Team('{self.shortName}', '{self.image_file}')"
 
 class Player(db.Model):
-    id   = db.Column(db.Integer, primary_key=True, autoincrement=False)
-    name = db.Column(db.String(50), unique=False, nullable=False)
+    id        = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    name      = db.Column(db.String(50), unique=False, nullable=False)
+    position  = db.Column(db.String(50), unique=False)
     image_file = db.Column(db.String(50), nullable=False, default='default.jpg')
+    team_id    = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False) # what about free agents?
     def __repr__(self):
         return f"Player('{self.name}', '{self.image_file}')"
 

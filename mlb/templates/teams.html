@@ -31,6 +31,33 @@
                     {% set pitching_url = stats_base_url ~ '&statType=pitching&team_id=' ~ id ~ '&playerType=ALL&position="1"' %}
                     {% set team_url = 'http://m.' ~ url ~ '.mlb.com/roster/40-man/' %}
 
+
+<!--
+https://stackoverflow.com/questions/32107545/update-text-of-submit-button-in-wtforms
+<p><input type="submit" name="btn" value={{ team_name }}></p>
+{{ team_name }}
+<button type="button">Click Me!</button>
+
+<form action="/action_page.php">
+  First name: <input type="text" name="fname"><br>
+  Last name: <input type="text" name="lname"><br>
+  <input type="submit" value="Submit">
+</form>
+
+<form action="/action_page.php" method="get">
+  Choose your favorite subject:
+  <button name="subject" type="submit" value="fav_HTML">HTML</button>
+  <button name="subject" type="submit" value="fav_CSS">CSS</button>
+</form>
+
+<button name="subject" type="submit" value="fav_HTML">{{ team_name }}</button>
+
+ -->
+
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-outline-info") }}
+                    </div>
+
                     <a class="team-link" href="{{ team_url }}"><span>
                     <img class="team-logo" src = "{{ logo_url }}"><{{ url ~ '.' ~ dashed_name ~ '.' ~ division_id }}></span>{{ team_name }}</a><br />
 
