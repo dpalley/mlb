@@ -24,7 +24,6 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        # import pdb; pdb.set_trace()
         flash(f'Your account has been created! You may now log in.', 'success')
         return redirect(url_for('login'))
     # else:
@@ -51,7 +50,7 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     logout_user()
     return redirect(url_for('home'))
 
@@ -72,19 +71,15 @@ def account():
 
 @app.route('/teams', methods=['GET', 'POST'])
 def teams():
+    if request.method == 'POST':
+        team_selected = request.form['team_select']
+        return team_selected
+        return redirect(url_for('players'))
 
-    form = TeamForm()
-    if form.validate_on_submit():
-        teams = get_teams()
-
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        db.session.commit()
-        flash('Your account information has been updated.', 'success')
-        return redirect(url_for('account'))
     elif request.method == 'GET':
         teams = get_teams()
-        return render_template('teams.html', title="Teams", teams=teams, form = form)
+        return render_template('teams.html', title="Teams", teams=teams)
+
 
 @app.route('/players')
 def players():
@@ -103,6 +98,9 @@ def choose(pick_one):
     if pick_one == 'users':
         title = 'Users'
         choices = User.query.all()
+    if pick_one == 'teams':
+        title = 'Teams'
+        choices = Team.query.all()
     elif pick_one == 'league':
         title = 'League'
         choices = League.query.all()

@@ -50,10 +50,10 @@ class UpdateAccountForm(FlaskForm):
 class TeamForm(FlaskForm):
     # https://stackoverflow.com/questions/23283348/validate-wtform-form-based-on-clicked-button
     # select   = ButtonField("Process", name="action", value=PROCESS)
-    teamname = StringField()
-    team_url = StringField()
-    team_id  = StringField()
-    submit   = SubmitField('test')
+    # team_name = StringField('team')
+    # team_url  = StringField('url')
+    # team_id   = StringField('id')
+    submit    = SubmitField('test')
 
 class SearchForm(FlaskForm):
     pass

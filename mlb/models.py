@@ -27,7 +27,8 @@ class Team(db.Model):
     division   = db.Column(db.String(30), unique=False, nullable=False)
     players    = db.relationship('Player', backref='team', lazy=True)
     def __repr__(self):
-        return f"Team('{self.shortName}', '{self.image_file}')"
+        return f"{self.name} ({self.division}) ID - {self.id}"
+
 
 class Player(db.Model):
     id        = db.Column(db.Integer, primary_key=True, autoincrement=False)
@@ -36,7 +37,8 @@ class Player(db.Model):
     image_file = db.Column(db.String(50), nullable=False, default='default.jpg')
     team_id    = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False) # what about free agents?
     def __repr__(self):
-        return f"Player('{self.name}', '{self.image_file}')"
+        player_team = Team.query.filter_by(team_id = id).first()
+        return f"{self.name}, {self.position} for the {player_team.name}"
 
 class League(db.Model):
     id   = db.Column(db.Integer, primary_key=True)

@@ -13,56 +13,27 @@
 
             <div class="division" id="{{ division_id }}">
 
+            <h4>{{ division.name }}</h4>
+            {% for team in division.teams %}
+                {% set team_name = team.name %}
+                {% set dashed_name = team_name.replace(' ', '-') %}
+                {% set id = team.id %}
+                {% set url = team.url[1:] %}
+                {% set logo_url = 'https:' ~ team.logo %}
+                {% set stats_base_url = "http://mlb.mlb.com/stats/sortable.jsp#game_type='R'&season=2019" %}
+                {% set hitting_url = stats_base_url ~ '&statType=hitting&team_id=' ~ id ~ '&playerType=ALL' %}
+                {% set fielding_url = stats_base_url ~ '&statType=fielding&team_id=' ~ id ~ '&playerType=ALL' %}
+                {% set pitching_url = stats_base_url ~ '&statType=pitching&team_id=' ~ id ~ '&playerType=ALL&position="1"' %}
+                {% set team_url = 'http://m.' ~ url ~ '.mlb.com/roster/40-man/' %}
 
+                <div>
+                    <form action="{{ url_for('teams') }}" method="POST">
+                        <span><img class="team-logo" src = "{{ logo_url }}">
+                        <button class = "team-link" type="submit" value="{{ id }}" name="team_select">{{ team_name }}</span>
+                    </form>
+                </div>
 
-                <!-- use WTForms here -->
-                <form method="POST" action="/teams">
-
-                <h4>{{ division.name }}</h4>
-                {% for team in division.teams %}
-                    {% set team_name = team.name %}
-                    {% set dashed_name = team_name.replace(' ', '-') %}
-                    {% set id = team.id %}
-                    {% set url = team.url[1:] %}
-                    {% set logo_url = 'https:' ~ team.logo %}
-                    {% set stats_base_url = "http://mlb.mlb.com/stats/sortable.jsp#game_type='R'&season=2019" %}
-                    {% set hitting_url = stats_base_url ~ '&statType=hitting&team_id=' ~ id ~ '&playerType=ALL' %}
-                    {% set fielding_url = stats_base_url ~ '&statType=fielding&team_id=' ~ id ~ '&playerType=ALL' %}
-                    {% set pitching_url = stats_base_url ~ '&statType=pitching&team_id=' ~ id ~ '&playerType=ALL&position="1"' %}
-                    {% set team_url = 'http://m.' ~ url ~ '.mlb.com/roster/40-man/' %}
-
-
-<!--
-https://stackoverflow.com/questions/32107545/update-text-of-submit-button-in-wtforms
-<p><input type="submit" name="btn" value={{ team_name }}></p>
-{{ team_name }}
-<button type="button">Click Me!</button>
-
-<form action="/action_page.php">
-  First name: <input type="text" name="fname"><br>
-  Last name: <input type="text" name="lname"><br>
-  <input type="submit" value="Submit">
-</form>
-
-<form action="/action_page.php" method="get">
-  Choose your favorite subject:
-  <button name="subject" type="submit" value="fav_HTML">HTML</button>
-  <button name="subject" type="submit" value="fav_CSS">CSS</button>
-</form>
-
-<button name="subject" type="submit" value="fav_HTML">{{ team_name }}</button>
-
- -->
-
-                    <div class="form-group">
-                        {{ form.submit(class="btn btn-outline-info") }}
-                    </div>
-
-                    <a class="team-link" href="{{ team_url }}"><span>
-                    <img class="team-logo" src = "{{ logo_url }}"><{{ url ~ '.' ~ dashed_name ~ '.' ~ division_id }}></span>{{ team_name }}</a><br />
-
-                    {% endfor %}
-                </form>
+                {% endfor %}
             </div>            <!-- class=division -->
             {% endfor %}      <!-- for division in league.divisions -->
         </div>                <!-- class=league -->

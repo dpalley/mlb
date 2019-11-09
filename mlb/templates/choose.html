@@ -5,7 +5,7 @@
 <h3>{{ title }}</h3>
 <ul>
     {% if title == 'Error' %}
-        <li>Error - choices include "/choose/users", "/choose/league", or "/choose/config"</li>
+        <li>Error - choices include "/choose/users", "/choose/league", "/choose/teams," or "/choose/config"</li>
     {% elif title == 'Configuration' %}
         <li>{{ choices }}</li>
     {% else %}
