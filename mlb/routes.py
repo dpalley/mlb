@@ -1,7 +1,7 @@
-from flask import render_template, url_for, request, flash, redirect
-from mlb.forms import RegistrationForm, LoginForm, UpdateAccountForm, TeamForm
+from flask import render_template, url_for, request, flash, redirect, session
+from mlb.forms import RegistrationForm, LoginForm, UpdateAccountForm, TeamForm, SearchForm
 from mlb.models import User, League, Team, Player
-from mlb.teams import get_teams, get_players, set_teams_db
+from mlb.teams import get_teams, get_players, set_teams_db, search_players
 from mlb import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -41,7 +41,6 @@ def login():
             login_user(user, remember = form.remember_me.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
-            # return redirect(next or url_for('home'))
 
         else:
             flash('Login uncussessful. Please check email and password.', 'danger')
@@ -73,7 +72,8 @@ def account():
 def teams():
     if request.method == 'POST':
         team_selected = request.form['team_select']
-        return team_selected
+        session['team_select'] = team_selected
+        # return team_selected
         return redirect(url_for('players'))
 
     elif request.method == 'GET':
@@ -83,15 +83,37 @@ def teams():
 
 @app.route('/players')
 def players():
-    players = get_players
+    selected_team = session.get('team_select', None)
+    players = get_players(selected_team)
     return render_template('players.html', title="Players", players = players)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        #retrieve parameters from MLB endpoint
+        name   = request.form['name']
+        status = request.form['status']
+
+        players = search_players(name, status)
+        if players:
+            # import pdb; pdb.set_trace()
+            return render_template('players.html', title="Players", players = players)
+        else:
+            flash('No results - please try again.', 'danger')
+            return redirect(url_for('search'))
+
+    elif request.method == 'GET':
+        return render_template('search.html', title="Search", form = form)
 
 @app.route('/show')
 def show():
-    users = User.query.all()
-    league = League.query.first()
-    teams = Team.query.all()
-    return render_template('show.html', users = users, league = league, teams = teams, config = app.config)
+    users   = User.query.all()
+    league  = League.query.first()
+    teams   = Team.query.all()
+    players = Player.query.all()
+    return render_template('show.html', users = users, league = league, \
+        teams = teams, players = players, config = app.config)
 
 @app.route('/choose/<pick_one>')
 def choose(pick_one):

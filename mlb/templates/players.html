@@ -1,6 +1,42 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h1>Players</h1>
-<br />
+{% set error_url = "this.src='http://mlb.mlb.com/images/players/silhouettes/generic_mug@2x.png';"%}
+<h6>Note - inactive players designated with '*'.</h6>
+
+<div>
+    <table>
+        <col width="50">
+        <col width="150">
+        <col width="80">
+        <col width="160">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Team</th>
+            <th>Status</th>
+            <!-- <th>Stats</th> -->
+        </tr>
+        {% for player in players %}
+
+            {% set player_name = player.name %}
+            {% if not player.status %}
+                {% set player_name = player.name ~ ' *'%}
+                {% set status = 'Inactive' %}
+            {% else %}
+                {% set status = 'Active' %}
+            {% endif %}
+
+            <tr>
+                <td><img class="player-pic" src = "{{ player.image_url }}" onerror={{ error_url }} /></td>
+                <td>{{ player_name }}</td>
+                <td>{{ player.position }}</td>
+                <td>{{ player.team }}</td>
+                <td>{{ status }}</td>
+                <!-- <td><a href="#">View stats</a></td> -->
+            </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock content %}

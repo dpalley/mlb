@@ -8,6 +8,7 @@ from flask_login import UserMixin
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 class User(db.Model, UserMixin):
     id         = db.Column(db.Integer, primary_key=True)
     username   = db.Column(db.String(50), unique=True, nullable=False)
@@ -31,14 +32,17 @@ class Team(db.Model):
 
 
 class Player(db.Model):
-    id        = db.Column(db.Integer, primary_key=True, autoincrement=False)
-    name      = db.Column(db.String(50), unique=False, nullable=False)
-    position  = db.Column(db.String(50), unique=False)
-    image_file = db.Column(db.String(50), nullable=False, default='default.jpg')
-    team_id    = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False) # what about free agents?
+    id         = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    name       = db.Column(db.String(50), unique=False, nullable=False)
+    position   = db.Column(db.String(50), unique=False)
+    image_url  = db.Column(db.String(80))
+    team_name  = db.Column(db.String(50), unique=False)
+    active     = db.Column(db.Boolean, default=True)
+    team_id    = db.Column(db.Integer, db.ForeignKey('team.id'))
     def __repr__(self):
         player_team = Team.query.filter_by(team_id = id).first()
         return f"{self.name}, {self.position} for the {player_team.name}"
+
 
 class League(db.Model):
     id   = db.Column(db.Integer, primary_key=True)

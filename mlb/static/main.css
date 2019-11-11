@@ -285,6 +285,7 @@ body {
     border: 1px solid #444;
 }
 
+.search-view,
 .login-view {
     background-image: url("field.jpg");
     padding: 30px;
