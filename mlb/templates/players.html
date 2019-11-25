@@ -2,41 +2,104 @@
 
 {% block content %}
 {% set error_url = "this.src='http://mlb.mlb.com/images/players/silhouettes/generic_mug@2x.png';"%}
-<h6>Note - inactive players designated with '*'.</h6>
 
-<div>
-    <table>
-        <col width="50">
-        <col width="150">
-        <col width="80">
-        <col width="160">
-        <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Team</th>
-            <th>Status</th>
-            <!-- <th>Stats</th> -->
-        </tr>
-        {% for player in players %}
+<div class="players-view">
+    <form method="POST" action="{{ url_for('show_players') }}" >
+        {{ form.csrf_token }}
+            <fieldset class="form-group">
 
-            {% set player_name = player.name %}
-            {% if not player.status %}
-                {% set player_name = player.name ~ ' *'%}
-                {% set status = 'Inactive' %}
-            {% else %}
-                {% set status = 'Active' %}
-            {% endif %}
+            <div>
+                <table>
+                    <col width="50">
+                    <col width="150">
+                    <col width="80">
+                    <!-- <col width="160"> -->
+                    <col width="160">
+                    <col width="160">
+                    <col width="160">
+                    <col width="80">
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>MLB Team</th>
+                        <!-- <th>MLB<br />Status</th> -->
+                        <th>Draft<br />Status</th>
+                        <th>Fantasy<br />Team</th>
+                        <!-- <th>Player<br />Status</th> -->
+                        <!-- <th>Player<br />Score</th> -->
+                    </tr>
 
-            <tr>
-                <td><img class="player-pic" src = "{{ player.image_url }}" onerror={{ error_url }} /></td>
-                <td>{{ player_name }}</td>
-                <td>{{ player.position }}</td>
-                <td>{{ player.team }}</td>
-                <td>{{ status }}</td>
-                <!-- <td><a href="#">View stats</a></td> -->
-            </tr>
-        {% endfor %}
-    </table>
+                    {% for player in players %}
+<!--
+                        {#{ player.name }}
+                        {{ player.position }}
+                        {{ player.id }}
+                        {{ player.team }}
+                        {{ player.status }}
+                        {{ player.team_id }}
+                        {{ player.draft_status }}
+                        {{ player.fantasy_team }#}
+ -->
+
+                         <!-- <br /> -->
+
+                        {% set player_name = player.name %}
+                        {% set player_id = player.id %}
+                        {% if not player.status %}
+                            {% set player_name = player.name ~ ' *'%}
+                        {% endif %}
+
+                        <tr>
+                            <td><img class="player-pic" src = "{{ player.image_url }}" onerror={{ error_url }} /></td>
+                            <td>{{ player_name }}</td>
+                            <td>{{ player.position }}</td>
+                            <td>{{ player.team }}</td>
+                            <!-- <td>{#{ status }#}</td> -->
+
+                            <!-- former MLB player -->
+                            {% if not player.status %}
+                            <td> - </td>
+                            <!-- <td> - </td> -->
+                            <!-- <td> - </td> -->
+
+                            <!-- active MLB player -->
+                            {% else %}
+                                <!-- inactive fantasy player -->
+                                {% if player.draft_status == 'available' %}
+                                <!-- <td> "DRAFT" button </td> -->
+                                <td class="form-group">
+                                    <button class="btn  btn-outline-info" name="draft_status"
+                                    type="submit" value="draft {{player.id}}">Draft</button>
+                                </td>
+                                <td> - </td>
+                                <!-- <td> - </td> -->
+                                <!-- <td> - </td> -->
+
+                                {% elif player.draft_status == 'drafted' %}
+                                <td>Drafted</td>
+                                <td> {{ player.fantasy_team }} </td>
+                                <!-- <td> playing or on bench </td> -->
+                                <!-- <td> score! </td> -->
+
+                                {% elif player.draft_status == 'my_player' %}
+                                <td class="form-group">
+                                    <button class="btn  btn-outline-danger" name="draft_status"
+                                    type="submit" value="release {{player.id}}">Release</button>
+                                <td> {{ player.fantasy_team }} </td>
+                                <!-- <td> play / bench </td> -->
+                                <!-- <td> score! </td> -->
+                                {% else %}
+
+                                {% endif %}    <!--  draft_status -->
+                            {% endif %}        <!--  player_status -->
+
+                            <!-- <td><a href="#">View stats</a></td> -->
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </fieldset>
+    </form>
 </div>
 {% endblock content %}

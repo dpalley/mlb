@@ -4,5 +4,8 @@ __pycache__/
 
 *.pyc
 *.ipynb
+*.log
 teams.json
 .DS_Store
+example.py
+home.html

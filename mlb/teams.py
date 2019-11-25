@@ -1,9 +1,10 @@
 import re, requests, json
 import lxml, fileinput
 from bs4 import BeautifulSoup as soup
-from mlb.models import League, Team, Player
+from mlb.models import League, Team, Player, write_to_database
 from mlb import db
 from flask import session
+from flask_login import current_user
 
 OFFLINE = False
 
@@ -24,6 +25,11 @@ espn_to_mlb = {
     'atl': 'braves', 'mia': 'marlins', 'nym': 'mets', 'phi': 'phillies', 'wsh': 'nationals',
     'chc': 'cubs', 'cin': 'reds', 'mil': 'brewers', 'pit': 'pirates', 'stl': 'cardinals',
     'ari': 'dbacks', 'col': 'rockies', 'lad': 'dodgers', 'sd': 'padres', 'sf': 'giants'}
+
+position_name = {0: 'DH', 1: 'P', 2: 'C', 3: '1B', 4: '2B', 5: '3B', 6: 'SS', 7: 'RF', 8: 'CF', 9: 'LF'}
+
+# import pdb; pdb.set_trace()
+
 
 # Isolates a JSON string within a text string.
 # 'blob' is a string of indeterminant length and content, such as a web page.
@@ -72,7 +78,7 @@ def set_teams_db():
                 t.division = division_name
                 if not bool(Team.query.filter_by(id=team['id']).first()):
                     db.session.add(t)
-                db.session.commit()
+                write_to_database()
 
 
 def get_teams():
@@ -86,83 +92,10 @@ def get_teams():
         return league.info if league else seed_teams()
 
 
-def get_players(team_id):
-    ''' Receives the MLB-designated team id and returns a list of the team players.
-    Each item in the list is a dictionary containing:
-    .
-    .
-    .
-    '''
-    team_id = int(team_id)
-
-    # set_teams_db()
-    player_list = []      # function will return a list of dictionaries of players
-
-    team = Team.query.filter_by(id = team_id).first()
-    long_url = team.url
-    short_url = url_lookup[long_url]
-    info = requests.get('http://m.mlb.com/' + short_url + '/roster/40-man/')
-    team_info = soup(info.text, 'html.parser')
-
-    groups = team_info.find_all('section', class_='module')
-
-    for group in groups:
-        if group.find('h4'):
-            position = group.find('h4').text
-            body = group.find('tbody')
-            players = body.find_all('tr')
-
-            for player in players:
-                player_info = player.find_all('td')
-                image_url = player.find('img')
-                pic_url = image_url['src']
-                if pic_url:
-                    start_index = pic_url.index('/mlb/')
-                    end_index = pic_url.index('@2x')
-                    id = int(pic_url[start_index+5: end_index])
-                    if Player.query.filter_by(id = id).first():
-                        p = Player.query.filter_by(id = id).first()
-                    else:
-                        p = Player()
-                    p.image_url = pic_url
-                    p.id = int(pic_url[start_index+5: end_index])
-
-                position = position[:-1] if position[-1]=='s' else position
-                p.position = position
-                p.team_id = team_id
-                p.active  = True
-                # import pdb; pdb.set_trace()
-
-                team = Team.query.filter_by(id=team_id).first()
-
-                team_name = team.name
-                p.team_name = team_name
-
-                items = player.find_all('td')
-                player_info = [item.text for item in items]
-                jersey, _, name, bats_throws, height, weight, dob = player_info
-
-                name = name.rstrip().lstrip()
-                p.name = name
-
-                # other info I could add to db: jersey, bats_throws, height, weight, dob
-                # print(jersey, name, bats_throws, height, weight, dob)
-                current_player = {'name': name, 'image_url': pic_url, 'position': position, 'status': 'True', 'team': team_name, 'id': id, 'team_id': team_id}
-                player_list.append(current_player)
-
-                #try:
-                db.session.add(p)
-                #except:
-                    # error message - could not add to database
-                db.session.commit()
-
-    return player_list
-
-
 def update_teams():
     league = League.query.first()
     league.info = get_teams()
-    db.session.commit()
+    write_to_database()
     return
 
 def get_db_teams():
@@ -180,68 +113,99 @@ def seed_teams():
     teams = find_json(my_script, my_script.index('teamData'))
     teams = json.loads(teams)
     league = League(info = teams)
-    db.session.add(league)
-    db.session.commit()
+    write_to_database(league)
     return teams
 
+def search_by_team(team_id):
+    player_list = []
+    url = "http://lookup-service-prod.mlb.com/json/named.roster_40.bam?team_id='" + str(team_id) + "'"
+    info = requests.get(url).text
 
-# https://appac.github.io/mlb-data-api-docs/#player-data-player-search-get
-def search_players(name, status):
+    json_results = json.loads(info)
+    return format_results(json_results, 'search_by_team')
+
+
+def search_by_name(name):
 
     str1 = "http://lookup-service-prod.mlb.com/json/"
-    str2 = "named.search_player_all.bam?sport_code='mlb'&active_sw='"
-    str3 = status
-    str4 = "'&name_part='"
-    str5 = name
-    str6 = "%25'"
+    str2 = "named.search_player_all.bam?sport_code='mlb'&active_sw='Y'"
+    str3 = "&name_part='"
+    str4 = name
+    str5 = "%25'"
 
-    request_string = str1 + str2 + str3 + str4 + str5 + str6
+    request_string = str1 + str2 + str3 + str4 + str5
 
     #try:
+        # put the request in a try-except block
     json_results = requests.get(request_string).json()
-    number_of_players = json_results["search_player_all"]['queryResults']["totalSize"]
-    if number_of_players == "0":
-        return None
-    if number_of_players == "1":
-        results = [json_results["search_player_all"]['queryResults']["row"]]
-        # results = results.append(json_results["search_player_all"]['queryResults']["row"])
-    else:
-        results = json_results["search_player_all"]['queryResults']["row"]
-    #except
-    #error handling if the search yields no results
+
+    #except:
+        #error-handling code
+    return format_results(json_results, 'search_by_name')
+
+def format_results(json_results, search_method):
+
+    if search_method == 'search_by_team':
+        number_of_players = json_results["roster_40"]['queryResults']["totalSize"]
+        if number_of_players == "0":
+            return None
+        if number_of_players == "1":
+            results = [json_results["roster_40"]['queryResults']["row"]]
+        else:
+            results = json_results["roster_40"]['queryResults']["row"]
+    elif search_method == 'search_by_name':
+        number_of_players = json_results["search_player_all"]['queryResults']["totalSize"]
+        if number_of_players == "0":
+            return None
+        if number_of_players == "1":
+            results = [json_results["search_player_all"]['queryResults']["row"]]
+        else:
+            results = json_results["search_player_all"]['queryResults']["row"]
+
     players = []
     for result in results:
+        if search_method == 'search_by_team':
+            position_id = result['primary_position']
+            position = result['position_txt']
+            mlb_team = result['team_name']
+        else:
+            position_id = result['position_id']
+            position = result['position']
+            mlb_team = result['team_full']
 
         player_id = result["player_id"]
+        draft_status = 'available'
+        fantasy_team = None
 
         if Player.query.filter_by(id = player_id).first():
+            # drafted, already in database
             p = Player.query.filter_by(id = player_id).first()
-        else:
-            p = Player()
+            team_id = p.team_id
+            fantasy_team = '-'
 
-        active_status = result["active_sw"]
-        active_status = False if active_status == 'N' else True
+            if team_id:
+                f_team = Team.query.filter_by(id = team_id).first()
+                fantasy_team = f_team.name
+                if f_team.id == current_user.id:
+                    draft_status = 'my_player'
+                else:
+                    draft_status = 'drafted'
 
         pic_url = 'http://gdx.mlb.com/images/gameday/mugshots/mlb/' + player_id + '@2x.jpg'
         player_id = int(player_id)
+
         current_player = {'name': result["name_display_first_last"],
                           'image_url': pic_url,
-                          'position': result["position"],
+                          'position': position,
+                          'position_id': position_id,
                           'id': player_id,
-                          'team': result["team_full"],
-                          'status': active_status,
-                          'team_id': int(result["team_id"])}
+                          'team': mlb_team,
+                          'status': True,
+                          'team_id': int(result["team_id"]),
+                          'draft_status': draft_status,
+                          'fantasy_team': fantasy_team,
+                          'playing_status': None}
 
         players.append(current_player)
-
-        p.image_url = pic_url
-        p.id = player_id
-        p.position = current_player['position']
-        p.team_id = current_player['team_id']
-        p.name = current_player['name']
-        p.active = active_status
-        p.team_name = result["team_full"]
-        db.session.add(p)
-        db.session.commit()
 
     return players

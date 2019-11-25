@@ -41,30 +41,44 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+
+             {% if current_user.is_authenticated and current_user.username == 'admin' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
+            </li>
+            {% endif %}
+
             <li class="nav-item active">
               <a class="nav-link" href="{{ url_for('home') }}">Home
                 <span class="sr-only">(current)</span>
               </a>
-            </li>
+          </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('teams') }}">Teams</a>
+              <a class="nav-link" href="{{ url_for('teams') }}">Search by Team</a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('search') }}"><i class="fas fa-search"></i></a>
+                <!-- <a class="nav-link" href="{#{ url_for('search') }#}"><i class="fas fa-search"></i></a> -->
+                <a class="nav-link" href="{{ url_for('search') }}">Search by Player</a>
             </li>
+
             {% if LOGIN_REQUIRED %}
                 {% if current_user.is_authenticated %}
                     <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                     </li>
+
                     <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('account') }}">Account</a>
                     </li>
+
                 {% else %}
+
                     <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('register') }}">Register</a>
                     </li>
+                    
                     <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('login') }}">Login</a>
                     </li>
@@ -91,7 +105,7 @@
 
 <footer class="footer">
     <span id="footer-span">
-        <small><p class="copy">Copyright &copy; <a href="http://www.davidalley.net/" target="_blank">David Alley</a></p></small>
+        <small><p class="copy">Copyright &copy; <a href="https://www.davidalley.net/" target="_blank">David Alley <i class="fas fa-external-link-alt"></i></a></p></small>
         <small class="copy" id="year">2019</small>
     </span>
 

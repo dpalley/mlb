@@ -7,9 +7,21 @@ import json
 import secrets
 from sqlalchemy.dialects.postgresql import JSON
 import os
+import logging
 
 
 app = Flask(__name__)
+
+# log user activity for user CRUD and player draft/release
+user_logger = logging.getLogger(__name__)
+user_logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s:  %(levelname)s:  %(module)s:  %(funcName)s:  %(message)s:')
+file_handler = logging.FileHandler('user_activity.log')
+file_handler.setFormatter(formatter)
+user_logger.addHandler(file_handler)
+
+user_logger.info('Start/restart time')
+
 
 #set default config variables
 app.debug = False

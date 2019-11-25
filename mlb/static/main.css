@@ -150,6 +150,7 @@ img {
     min-width: 190px;
 }
 
+.player-link,
 .team-link {
   background-color: inherit;
   border: none;
