@@ -1,4 +1,4 @@
 # mlb
-This is a Flask-based app to scrape and analyze MLB data.
+This is a Flask-based app to search for current MLB players and draft them into a fantasy league.
 
-Currently, login functionality is not necessary to implement any of the features.
+Users, team rosters, and player status are stored in a Postgres database.

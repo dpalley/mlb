@@ -69,7 +69,7 @@ def register():
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_pw)
         write_to_database(user)
-        team = Team(name=form.team_name.data, user=user)
+        team = Team(name=form.team_name.data, user=user, id=user.id)
         write_to_database(team)
         user_logger.info(f'User {user.username} created')
         flash(f'Your account has been created! You may now log in.', 'success')

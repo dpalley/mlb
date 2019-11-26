@@ -1,7 +1,7 @@
 from mlb import db, login_manager, user_logger
 # from teams import get_teams, get_players
 from sqlalchemy.dialects.postgresql import JSON
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from flask import flash
 
 # what is the standard makeup of fantasy teams
@@ -40,10 +40,10 @@ class User(db.Model, UserMixin):
 
 
 class Team(db.Model):
-    id         = db.Column(db.Integer, primary_key=True, autoincrement=False)
-    name       = db.Column(db.String(20), unique=True, nullable=False)
-    user_id  = db.Column(db.Integer, db.ForeignKey('user.id'))
-    players    = db.relationship('Player', backref='team', lazy=True)
+    id           = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    name         = db.Column(db.String(20), unique=True, nullable=False)
+    user_id      = db.Column(db.Integer, db.ForeignKey('user.id'))
+    players      = db.relationship('Player', backref='team', lazy=True)
     latest_score = db.Column(db.Integer)
     total_score  = db.Column(db.Integer)
     has_draft    = db.Column(db.Boolean, default = False)
