@@ -13,9 +13,9 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
     {% if title %}
-        <title>MLB Data - {{ title }}</title>
+        <title>Fanatasy League - {{ title }}</title>
     {% else %}
-        <title>MLB Data</title>
+        <title>Fanatasy League</title>
     {% endif %}
 </head>
 <body>
@@ -30,9 +30,9 @@
 
         <div class="text-xs-center">
             {% if title %}
-                <h2 id="banner">MLB Statistics - {{ title }}</h2>
+                <h2 id="banner">MLB Fantasy League - {{ title }}</h2>
             {% else %}
-                <h2 id="banner">MLB Statistics</h2>
+                <h2 id="banner">MLB Fantasy League</h2>
             {% endif %}
         </div>
 
@@ -49,7 +49,7 @@
             {% endif %}
 
             <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('home') }}">Home
+              <a class="nav-link" href="{{ url_for('home') }}">Team Info
                 <span class="sr-only">(current)</span>
               </a>
           </li>
@@ -59,7 +59,6 @@
             </li>
 
             <li class="nav-item">
-                <!-- <a class="nav-link" href="{#{ url_for('search') }#}"><i class="fas fa-search"></i></a> -->
                 <a class="nav-link" href="{{ url_for('search') }}">Search by Player</a>
             </li>
 
@@ -78,7 +77,7 @@
                     <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('register') }}">Register</a>
                     </li>
-                    
+
                     <li class="nav-item">
                       <a class="nav-link" href="{{ url_for('login') }}">Login</a>
                     </li>

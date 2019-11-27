@@ -52,7 +52,8 @@ class Team(db.Model):
     allocation = {0: 1, 1:4, 2:2, 3:2, 4:2, 5:2, 6:2, 7:2, 8:2, 9:2 }
 
     def __repr__(self):
-        return f"{self.name} {self.total_score}"
+        # return f"{self.name} {self.total_score}"
+        return f"{self.name}"
 
 # position numbers 0-9, fantasy status = active, inactive, undrafted (default)
 #fantasy team, fantasy score

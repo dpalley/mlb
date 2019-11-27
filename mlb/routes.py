@@ -30,9 +30,9 @@ def home():
                 affected_player = Player.query.filter_by(id=player_id).first()
 
                 if action == 'draft':
-                    drafted = affected_player.draft(current_user.id)
+                    drafted = affected_player.draft(my_id)
                     if drafted:
-                        current_team = Team.query.filter_by(id=current_user.id).first()
+                        current_team = Team.query.filter_by(id=my_id).first()
                         my_player['draft_status'] = 'my_player'
                         my_player['playing_status'] = 'benched'
                         my_player['fantasy_team'] = current_team.name

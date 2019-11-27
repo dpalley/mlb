@@ -1,7 +1,8 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-{% set error_url = "this.src='http://mlb.mlb.com/images/players/silhouettes/generic_mug@2x.png';"%}
+{#% set error_url = "this.src='http://mlb.mlb.com/images/players/silhouettes/generic_mug@2x.png';"%#}
+{% set error_url = ""{{ url_for('static', filename='generic_mug@2x.png') }}";"%}
 
 <div class="players-view">
     <form method="POST" action="{{ url_for('show_players') }}" >

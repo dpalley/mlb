@@ -330,3 +330,7 @@ body {
 .alert {
     margin-bottom: 0;
 }
+
+.no-bullet {
+    list-style: none;
+}
